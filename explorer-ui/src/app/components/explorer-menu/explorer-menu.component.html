@@ -1,0 +1,18 @@
+<nav *ngIf="(network | async) as name" class="explorer-menu__container">
+
+  <button mat-flat-button routerLink=".">Dashboard</button>
+
+  <button mat-button [matMenuTriggerFor]="menuChain">Chain <i class="fas fa-chevron-down"></i></button>
+  <mat-menu #menuChain="matMenu">
+    <button mat-menu-item routerLink="block">Blocks</button>
+    <button mat-menu-item routerLink="extrinsic">Extrinsics</button>
+    <button mat-menu-item routerLink="transfer">Transfers</button>
+    <button mat-menu-item routerLink="event">Events</button>
+    <button mat-menu-item routerLink="log">Logs</button>
+  </mat-menu>
+
+  <button mat-button [matMenuTriggerFor]="menuRuntime">Runtime <i class="fas fa-chevron-down"></i></button>
+  <mat-menu #menuRuntime="matMenu">
+    <button mat-menu-item routerLink="runtime">Upgrade history</button>
+  </mat-menu>
+</nav>

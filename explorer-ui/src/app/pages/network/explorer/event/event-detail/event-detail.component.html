@@ -1,0 +1,66 @@
+<button mat-button [routerLink]="'..'"><i class="fas fa-chevron-left"></i> Events</button>
+
+<h1>Event</h1>
+
+<ng-container *ngIf="(event | async) as event; else loadingOrError">
+  <ng-container *ngIf="(networkProperties | async) as props">
+
+    <h2>{{event.blockNumber + '-' + event.eventIdx}}</h2>
+
+    <table class="detail-table">
+      <tbody>
+      <tr>
+        <td class="detail-table--label-cell">Block</td>
+        <td><a [routerLink]="'../../block/' + event.blockNumber">{{event.blockNumber}}</a></td>
+      </tr>
+
+      <tr *ngIf="event.extrinsicIdx !== null">
+        <td class="detail-table--label-cell">Extrinsic</td>
+        <td>
+          <a [routerLink]="'../../extrinsic/' + event.blockNumber + '-' + event.extrinsicIdx">
+            {{event.blockNumber + '-' + event.extrinsicIdx}}
+          </a>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Event Index</td>
+        <td>{{event.eventIdx}}</td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Pallet</td>
+        <td><a [routerLink]="'../../runtime/' + event.specName + '-' + event.specVersion + '/pallet/' + event.eventModule">{{event.eventModule}}</a></td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Event name</td>
+        <td><a [routerLink]="'../../runtime/' + event.specName + '-' + event.specVersion + '/pallet/' + event.eventModule + '/event/' + event.eventName">{{event.eventName}}</a></td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Runtime</td>
+        <td><a [routerLink]="'../../runtime/' + event.specName + '-' + event.specVersion">{{event.specName + '-' + event.specVersion}}</a></td>
+      </tr>
+
+      <tr *ngIf="event.attributes">
+        <td class="detail-table--label-cell">Attributes</td>
+        <td>
+          <attributes [attributes]="event.attributes" [iconTheme]="props.iconTheme" [iconSize]="24"
+                      [tokenDecimals]="props.tokenDecimals" [tokenSymbol]="props.tokenSymbol"
+                      [ss58Prefix]="props.ss58Format" [runtimeEventAttributes]="runtimeEventAttributes | async"></attributes>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="(fetchEventStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch event.</p>
+  </ng-container>
+</ng-template>

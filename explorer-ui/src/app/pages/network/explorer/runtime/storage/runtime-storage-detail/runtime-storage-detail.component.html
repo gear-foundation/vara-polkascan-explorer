@@ -1,0 +1,32 @@
+<button mat-button *ngIf="(runtime | async) as runtime" [routerLink]="'../../../..'"><i class="fas fa-chevron-left"></i> Runtime {{ runtime }}</button>
+<button mat-button *ngIf="(pallet | async) as pallet" [routerLink]="'../..'"><i class="fas fa-chevron-left"></i> {{pallet}}</button>
+
+<h1>Storage Function</h1>
+
+<ng-container *ngIf="storage|async as storage; else loadingOrError">
+
+  <h2>{{storage.storageName}}</h2>
+
+  <pre>{{storage.documentation}}</pre>
+
+  <table class="mat-table">
+    <tbody>
+      <tr class="mat-row"><th class="mat-header-cell">Value type</th><td class="mat-cell">{{storage.valueScaleType}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Modifier</th><td class="mat-cell">{{storage.modifier}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key prefix pallet</th><td class="mat-cell">{{storage.keyPrefixPallet}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key prefix name</th><td class="mat-cell">{{storage.keyPrefixName}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key 1 type</th><td class="mat-cell">{{storage.key1ScaleType}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key 1 hasher</th><td class="mat-cell">{{storage.key1Hasher}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key 2 type</th><td class="mat-cell">{{storage.key2ScaleType}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Key 2 hasher</th><td class="mat-cell">{{storage.key2Hasher}}</td></tr>
+      <tr class="mat-row"><th class="mat-header-cell">Linked</th><td class="mat-cell">{{storage.isLinked}}</td></tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="(fetchStorageStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet storage function.</p>
+  </ng-container>
+</ng-template>

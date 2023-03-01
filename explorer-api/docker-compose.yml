@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    hostname: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: explorer_api
+    ports:
+      - "3307:3306"
+
+  redis:
+    image: "redis:latest"
+
+  polling:
+    build:
+      context: .
+      dockerfile: ./docker/polling/Dockerfile
+    image: polkascan/explorer-polling-beta
+    command: python polling.py
+    depends_on:
+      - redis
+      - db
+      - api
+    environment:
+      - DB_USERNAME=root
+      - DB_NAME=explorer_api
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_PASSWORD=root
+      - BROADCAST_URI=redis://redis:6379
+      - CHAIN_ID=polkadot
+      - SENTRY_PROJECT_NAME=explorer-polling-v2
+      - SENTRY_SERVER_NAME=polkadapt
+      - SENTRY_DSN=
+
+  api:
+    build:
+      context: .
+      dockerfile: ${API_DOCKER_FILE:-./docker/api/Dockerfile}
+    image: ${API_DOCKER_IMAGE:-polkascan/explorer-api-beta}
+    command: ${API_DOCKER_COMMAND:-bash -c "/usr/src/start-api.sh"}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - db
+#    # Note: enable when running with Signoz telemetry
+#    networks:
+#        - default
+#        - clickhouse-setup_default
+    environment:
+      - DB_USERNAME=root
+      - DB_NAME=explorer_api
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - BLOCK_LIMIT_COUNT=500000
+      - HTTP_MOUNT=/graphql/
+      - WS_MOUNT=/graphql-ws/
+      - DB_HARVESTER_NAME=polkascan
+      - DB_PASSWORD=root
+      - DOMAIN=localhost
+      - SERVER_ADDR=localhost
+      - SERVER_PORT=8000
+      - WEBSOCKET_URI=ws://localhost:8000
+      - BACKEND_CORS_ORIGINS=[]
+      - BROADCAST_URI=redis://redis:6379
+      - API_SQLA_URI=mysql+pymysql://root:root@mysql:3306/explorer_api?charset=utf8mb4
+      - CHAIN_ID=polkadot
+      - SENTRY_PROJECT_NAME=explorer-api-v2
+      - SENTRY_SERVER_NAME=polkadapt
+      - SENTRY_DSN=
+
+##Note: enable when running with Signoz telemetry
+#networks:
+#    clickhouse-setup_default: # external signoz created network
+#        external: true

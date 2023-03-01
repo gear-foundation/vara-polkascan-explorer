@@ -1,0 +1,210 @@
+/*!
+ * Polkascan Explorer UI
+ * Copyright (C) 2018-2022 Polkascan Foundation (NL)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+:root {
+  --ps-top-bar-bg-color: #350659;
+  --ps-top-bar-text-color: #FFF;
+  --ps-top-bar-logo-text-color: #FFF;
+  --ps-top-bar-logo-dot-color: #FF6482;
+  --ps-grid-column-padding: 10px;
+  --ps-badge-good-color: #008000;
+  --ps-badge-bad-color: #8b0000;
+  --ps-text-error-color: #8b0000;
+}
+
+button, html, input, select, textarea {
+  font-family: "Lexend", sans-serif;
+  font-weight: 400;
+  color: #350659;
+}
+
+body, html {
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+attributes {
+  position: relative;
+  font-size: 12px;
+
+  .mat-mdc-icon-button {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+
+  attributes {
+    display: block;
+    position: relative;
+    margin-top: 8px;
+    margin-left: 18px;
+  }
+
+  .attribute {
+    border-bottom: solid 1px #aaa;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .attribute .attribute {
+    border-left: solid 1px #aaa;
+  }
+
+  .attributes-index {
+    display: block;
+    position: absolute;
+    left: 3px;
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: normal;
+    font-style: normal;
+    margin-top: -9px;
+  }
+}
+
+attributes .attribute,
+attribute-struct {
+  display: block;
+
+  label {
+    display: block;
+    padding-top: 0.5rem;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  .attribute-struct-label-text {
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  .attribute-struct-array-count {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  > div {
+    word-break: break-word;
+  }
+
+  child-attributes,
+  attribute-struct {
+    display: block;
+
+    attribute-struct {
+      margin-left: 16px;
+    }
+  }
+
+  .attribute-struct-value-null {
+    font-size: 10px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+}
+
+.detail-table {
+  min-width: 100%;
+  border-spacing: 0;
+
+  thead {
+    th {
+      text-align: left;
+      color: rgba(0, 0, 0, 0.54);;
+      font-size: 12px;
+      font-weight: 500;
+      border-bottom-color: rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  tbody {
+    th {
+      vertical-align: top;
+    }
+  }
+
+  td, th {
+    border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+    padding: 0.5rem;
+  }
+}
+
+.detail-table--label-cell {
+  text-align: left;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 8rem;
+  vertical-align: top;
+  width: 1%;
+  line-height: 24px;
+}
+
+.detail-table--details-link-cell {
+  min-width: auto;
+  width: 1%;
+}
+
+.mat-mdc-table--full-width,
+.table--full-width {
+  width: 100%;
+}
+
+.mat-cell--icon-cell {
+  width: 2rem;
+}
+
+.mat-cell--details-link-cell {
+  width: 1%;
+}
+
+mat-divider.mat-divider {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.mat-column-age {
+  width: 7rem;
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.mono {
+  font-family: Consolas, monaco, "Ubuntu Mono", "Liberation Mono", "Courier New", Courier, monospace;
+  opacity: 66%;
+}
+
+.width-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1260px;
+  box-sizing: border-box;
+  padding: 0 20px;
+}

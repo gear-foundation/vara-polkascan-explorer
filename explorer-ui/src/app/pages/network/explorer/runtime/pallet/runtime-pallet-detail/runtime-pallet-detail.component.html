@@ -1,0 +1,261 @@
+<button mat-button *ngIf="(runtime | async) as runtime" [routerLink]="'../..'"><i class="fas fa-chevron-left"></i> Runtime {{ runtime }}</button>
+
+<h1>Pallet</h1>
+
+<ng-container *ngIf="(pallet | async) as pallet; else loadingOrError">
+
+  <h2>{{ $any(pallet).pallet }}</h2>
+
+  <h3>Call Functions</h3>
+
+  <ng-container *ngIf="(calls | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackCall">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fas fa-file-alt"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let callFunction">
+          <a [routerLink]="'call/' + callFunction.callName">{{callFunction.callName}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lookup">
+        <th mat-header-cell *matHeaderCellDef>Lookup</th>
+        <td mat-cell *matCellDef="let callFunction">
+          {{callFunction.lookup}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="arguments">
+        <th mat-header-cell *matHeaderCellDef>Arguments</th>
+        <td mat-cell *matCellDef="let callFunction">
+          {{callFunction.countArguments}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--details-link-cell"></th>
+        <td mat-cell *matCellDef="let callFunction">
+          <a [routerLink]="'call/' + callFunction.callName"><span class="material-icons">chevron_right</span></a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns.calls; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns.calls"></tr>
+
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(fetchCallsStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet call functions.</p>
+  </ng-container>
+
+
+  <h3>Events</h3>
+
+  <ng-container *ngIf="(events | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackEvent">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fas fa-calendar-check"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let event">
+          <a [routerLink]="'event/' + event.eventName">{{event.eventName}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lookup">
+        <th mat-header-cell *matHeaderCellDef>Lookup</th>
+        <td mat-cell *matCellDef="let event">
+          {{event.lookup}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="attributes">
+        <th mat-header-cell *matHeaderCellDef>Attributes</th>
+        <td mat-cell *matCellDef="let event">
+          {{event.countAttributes}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--details-link-cell"></th>
+        <td mat-cell *matCellDef="let event">
+          <a [routerLink]="'event/' + event.eventName"><span class="material-icons">chevron_right</span></a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns.events; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns.events"></tr>
+
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(fetchEventsStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet events.</p>
+  </ng-container>
+
+
+  <h3>Storage Functions</h3>
+
+  <ng-container *ngIf="(storages | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackStorage">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fas fa-database"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let storage">
+          <a [routerLink]="'storage/' + storage.storageName">{{storage.storageName}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let storage">
+          {{storage.valueScaleType}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--details-link-cell"></th>
+        <td mat-cell *matCellDef="let storage">
+          <a [routerLink]="'storage/' + storage.storageName"><span class="material-icons">chevron_right</span></a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns.storages; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns.storages"></tr>
+
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(fetchStoragesStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet storage functions.</p>
+  </ng-container>
+
+
+  <h3>Constants</h3>
+
+  <ng-container *ngIf="(constants | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackConstant">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fas fa-memory"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let constant">
+          <a [routerLink]="'constant/' + constant.constantName">{{constant.constantName}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let constant">
+          {{constant.scaleType}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef>Value</th>
+        <td mat-cell *matCellDef="let constant">
+          {{constant.value}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--details-link-cell"></th>
+        <td mat-cell *matCellDef="let constant">
+          <a [routerLink]="'constant/' + constant.constantName"><span class="material-icons">chevron_right</span></a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns.constants; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns.constants"></tr>
+
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(fetchConstantsStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet constants.</p>
+  </ng-container>
+
+
+  <h3>Error Messages</h3>
+
+  <ng-container *ngIf="(errorsMessages | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackError">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fa fa-exclamation-triangle"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let error">
+          {{error.errorName}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef>Index</th>
+        <td mat-cell *matCellDef="let error">
+          {{error.errorIdx}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="documentation">
+        <th mat-header-cell *matHeaderCellDef>Documentation</th>
+        <td mat-cell *matCellDef="let error">
+          {{error.documentation}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns.errors; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns.errors"></tr>
+
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(fetchErrorMessagesStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet error-messages.</p>
+  </ng-container>
+</ng-container>
+
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="(fetchPalletStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet.</p>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,55 @@
+name: Test, Build and Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-build-publish:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Install Headless Chromium Dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon-x11-0 libxcomposite-dev libxdamage1 libxrandr2 libgbm-dev libasound2
+
+      - name: Checkout Code Repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@polkadapt'
+
+      - name: Install NPM Dependencies
+        run: npm ci
+
+      - name: Unit Tests
+        run: CHROME_BIN=$(find "$(pwd -P)/node_modules" -type f -name chrome) npm run test:prod
+
+      - name: Build Project Packages
+        run: npm run build
+
+      - name: Code Linter
+        run: npm run lint
+
+      - name: Dry-run Publish to NPM
+        if: ${{ env.ACT || github.event_name == 'pull_request' }}
+        run: npm run publish:dry-run
+
+      - name: Publish to NPM
+        if: ${{ !env.ACT && github.event_name == 'push' }}
+        run: npm run publish:all

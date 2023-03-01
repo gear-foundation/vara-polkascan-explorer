@@ -1,0 +1,63 @@
+<button mat-button [routerLink]="'..'"><i class="fas fa-chevron-left"></i> Logs</button>
+
+<h1>Log</h1>
+
+<ng-container *ngIf="(log | async) as log; else loadingOrError">
+  <ng-container *ngIf="(networkProperties | async) as props">
+
+    <h2>{{log.blockNumber + '-' + log.logIdx}}</h2>
+
+    <table class="detail-table">
+      <tbody>
+
+      <tr>
+        <td class="detail-table--label-cell">Block</td>
+        <td><a [routerLink]="'../../block/' + log.blockNumber">{{log.blockNumber}}</a></td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Timestamp</td>
+        <td>{{log.blockDatetime | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Timestamp UTC</td>
+        <td>{{log.blockDatetime | date:'dd-MM-yyyy HH:mm:ss' :'UTC'}}</td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Log Index</td>
+        <td>{{log.logIdx}}</td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Type</td>
+        <td>{{log.typeName}}</td>
+      </tr>
+
+      <tr>
+        <td class="detail-table--label-cell">Runtime</td>
+        <td><a [routerLink]="'../../runtime/' + log.specName + '-' + log.specVersion">{{log.specName + '-' + log.specVersion}}</a></td>
+      </tr>
+
+      <tr *ngIf="log.data">
+        <td class="detail-table--label-cell">Data</td>
+        <td>
+          <attribute-struct [attribute]="log.data" [iconTheme]="props.iconTheme" [iconSize]="24"
+                            [tokenDecimals]="props.tokenDecimals"
+                            [tokenSymbol]="props.tokenSymbol"></attribute-struct>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="(fetchLogStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch log.</p>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,42 @@
+<div class="attribute" *ngFor="let attribute of parsedAttributes; let i = index">
+  <div *ngIf="isArray | async" class="attributes-index">{{i}}</div>
+
+  <ng-container [ngSwitch]="attributesConfig[attribute.type]">
+
+    <label *ngIf="attributesConfig[attribute.type] && (attribute.name || attribute.key)" [title]="attribute.type">{{ attribute.name || attribute.key }}</label>
+
+    <attribute-address *ngSwitchCase="'address'" [attribute]="attribute" [iconTheme]="iconTheme" [iconSize]="iconSize"
+                       [ss58Prefix]="ss58Prefix"></attribute-address>
+
+    <attribute-proposal *ngSwitchCase="'proposal'" [attribute]="attribute"></attribute-proposal>
+
+    <attribute-referendum *ngSwitchCase="'referendum'" [attribute]="attribute"></attribute-referendum>
+
+    <attribute-session *ngSwitchCase="'session'" [attribute]="attribute"></attribute-session>
+
+    <attribute-block *ngSwitchCase="'block'" [attribute]="attribute"></attribute-block>
+
+    <attribute-account-index *ngSwitchCase="'account'" [attribute]="attribute"></attribute-account-index>
+
+    <attribute-ethereum-address *ngSwitchCase="'ethereumAddress'" [attribute]="attribute"
+                                [iconSize]="iconSize">
+    </attribute-ethereum-address>
+
+    <attribute-balance *ngSwitchCase="'balance'" [attribute]="attribute" [tokenDecimals]="tokenDecimals"
+                       [tokenSymbol]="tokenSymbol"></attribute-balance>
+
+
+    <attribute-date *ngSwitchCase="'date'" [attribute]="attribute"></attribute-date>
+
+    <attribute-bytes *ngSwitchCase="'bytes'" [attribute]="attribute"></attribute-bytes>
+
+    <attribute-downloadable *ngSwitchCase="'downloadable'" [attribute]="attribute"></attribute-downloadable>
+
+    <attribute-boolean *ngSwitchCase="'boolean'" [attribute]="attribute"></attribute-boolean>
+
+    <attribute-struct *ngSwitchDefault [attribute]="attribute" [iconTheme]="iconTheme" [iconSize]="iconSize"
+                      [tokenDecimals]="tokenDecimals"
+                      [tokenSymbol]="tokenSymbol"></attribute-struct>
+
+  </ng-container>
+</div>

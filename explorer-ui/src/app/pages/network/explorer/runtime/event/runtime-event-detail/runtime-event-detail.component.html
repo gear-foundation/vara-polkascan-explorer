@@ -1,0 +1,56 @@
+<button mat-button *ngIf="runtime" [routerLink]="'../../../..'"><i class="fas fa-chevron-left"></i> Runtime {{ runtime }}</button>
+<button mat-button *ngIf="pallet" [routerLink]="'../..'"><i class="fas fa-chevron-left"></i> {{pallet}}</button>
+
+<h1>Event</h1>
+
+<ng-container *ngIf="event|async as event; else loadingOrError">
+
+  <h2>{{ event.eventName }}</h2>
+
+  <pre>{{event.documentation}}</pre>
+
+  <h3>Attributes</h3>
+
+  <ng-container *ngIf="(eventAttributes | async) as dataSource">
+    <table mat-table [dataSource]="dataSource" [trackBy]="trackEventAttribute">
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef class="mat-cell--icon-cell"></th>
+        <td mat-cell *matCellDef>
+          <i class="fas fa-stream"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let attr">
+          {{attr.scaleType}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="typeComposition">
+        <th mat-header-cell *matHeaderCellDef>Type Composition</th>
+        <td mat-cell *matCellDef="let attr">
+          <pre>{{attr.parsedComposition | json}}</pre>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="visibleColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: visibleColumns"></tr>
+
+    </table>
+
+    <ng-container *ngIf="(fetchEventAttributesStatus | async) as status">
+      <p *ngIf="status === 'loading'">Loading...</p>
+      <p *ngIf="status === 'error'">Could not fetch runtime pallet event attributes.</p>
+    </ng-container>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="(fetchEventStatus | async) as status">
+    <p *ngIf="status === 'loading'">Loading...</p>
+    <p *ngIf="status === 'error'">Could not fetch runtime pallet event.</p>
+  </ng-container>
+</ng-template>
