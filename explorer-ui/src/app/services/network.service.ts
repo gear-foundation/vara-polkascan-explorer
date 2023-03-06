@@ -58,7 +58,7 @@ export class NetworkService {
   constructor(private pa: PolkadaptService,
               private bs: BlockService,
               private rs: RuntimeService,
-              private ps: PricingService,
+              // private ps: PricingService,
               private vs: VariablesService) {
     this.online = new BehaviorSubject(navigator.onLine);
     window.addEventListener('online', () => this.online.next(true));
@@ -103,7 +103,7 @@ export class NetworkService {
         this.blockHarvester.resume();
       }
 
-      this.ps.initialize(network, this.vs.currency.value);
+      // this.ps.initialize(network, this.vs.currency.value);
       this.rs.initialize(network);
 
       let chainSS58: number | undefined;
@@ -186,7 +186,7 @@ export class NetworkService {
   }
 
   destroy(): void {
-    this.ps.destroy();
+    // this.ps.destroy();
     this.pa.clearNetwork();
     this.currentNetwork.next('');
     this.settingNetwork = '';
