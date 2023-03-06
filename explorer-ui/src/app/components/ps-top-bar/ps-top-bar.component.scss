@@ -117,10 +117,12 @@ ps-top-bar {
 }
 
 .github-link {
+  color: white;
   margin-left: 16px;
   padding-top: 6px;
+  transition: color 250ms ease-out;
 
-  path {
-    fill: white;
+  &:hover {
+    color: rgba(255, 255, 255, .7);
   }
 }
