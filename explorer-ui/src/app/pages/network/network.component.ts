@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { NetworkService } from '../../services/network.service';
-import { Subject } from 'rxjs';
-import { VariablesService } from '../../services/variables.service';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {NetworkService} from '../../services/network.service';
+import {Subject} from 'rxjs';
+import {VariablesService} from '../../services/variables.service';
 
 @Component({
   selector: 'app-network',
@@ -38,18 +38,24 @@ export class NetworkComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Change network when param changes in route.
-    this.route.params
-      .pipe(
-        takeUntil(this.destroyer),
-        map((p) => p['network']),
-        distinctUntilChanged()
-      )
-      .subscribe((network: string) => {
-        const noAwait = this.ns.setNetwork(network);
-        this.vars.network.next(network);
-        this.vars.blockNumber.next(0);
-      });
+    // // Change network when param changes in route.
+    // this.route.params
+    //   .pipe(
+    //     takeUntil(this.destroyer),
+    //     map((p) => p['network']),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((network: string) => {
+    //     console.log({network})
+    //     const noAwait = this.ns.setNetwork(network);
+    //     this.vars.network.next(network);
+    //     this.vars.blockNumber.next(0);
+    //   });
+
+    const network = 'vara'
+    const noAwait = this.ns.setNetwork(network);
+    this.vars.network.next(network);
+    this.vars.blockNumber.next(0);
 
     // Pass the last loaded number to the variables service, so other parts of the application can pick it up.
     this.ns.currentNetwork.pipe(

@@ -22,13 +22,13 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 
 const routes: Routes = [
   {
-    path: ':network',
+    path: '',
     loadChildren: () => import('./pages/network/network.module').then(m => m.NetworkModule)
   },
-  {
-    path: '',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
-  },
+  // {
+  //   path: '',
+  //   loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
+  // },
   {path: '**', component: PageNotFoundComponent}
 ];
 
