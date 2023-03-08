@@ -31,6 +31,6 @@ jobs:
       - name: Build and push Frontend image
         uses: docker/build-push-action@master
         with:
-          context: explorer-ui/Dockerfile
+          file: explorer-ui/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ui:latest
