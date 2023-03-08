@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create dummy config
-        run:  echo '{}' > src/assets/config.json
+        run:  echo '{}' > /explorer-ui/src/assets/config.json
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
