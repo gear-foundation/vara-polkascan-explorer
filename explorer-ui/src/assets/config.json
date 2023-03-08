@@ -1,0 +1,6 @@
+{
+  "vara": {
+    "substrateRpcUrlArray": ["wss://explorer-rpc.vara-network.io"],
+    "explorerWsUrlArray": ["wss://explorer-graphql.vara-network.io/graphql-ws"]
+  }
+}
