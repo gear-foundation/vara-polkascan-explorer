@@ -1,1 +1,9 @@
+- name: "update frontend"
+  hosts: all
+  become: yes
+  remote_user: ec2-user
+  vars:
 
+  tasks:
+    - name: Update frontend
+      include: /ansible/tasks/update.yaml
