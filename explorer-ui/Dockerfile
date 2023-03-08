@@ -72,11 +72,6 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy build artifacts from ‘builder’ stage to default nginx public folder.
 COPY --from=builder /app/dist/explorer-ui /usr/share/nginx/html
 
-# Copy config.json file for runtime environment variables.
-ARG CONFIG_JSON=src/assets/config.json
-ENV CONFIG_JSON=$CONFIG_JSON
-COPY $CONFIG_JSON /usr/share/nginx/html/assets/config.json
-
 EXPOSE 80
 
 CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]
