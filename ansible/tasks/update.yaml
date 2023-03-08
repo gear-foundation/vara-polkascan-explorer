@@ -1,0 +1,4 @@
+- name: Restart frontend
+  shell: >
+    /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" restart gui
+  become: yes
