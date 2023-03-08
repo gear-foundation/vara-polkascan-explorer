@@ -5,6 +5,10 @@
   vars:
 
   tasks:
+  
+    - name: Purge images
+      shell: docker image prune -f
+      become: yes 
 
     - name: Stop frontend
       shell: >
