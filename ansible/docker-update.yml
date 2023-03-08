@@ -6,4 +6,4 @@
 
   tasks:
     - name: Update frontend
-      include: /tasks/update.yaml
+      include: /tasks/docker/update.yaml
