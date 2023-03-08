@@ -18,22 +18,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-#     - name: Set up Docker Buildx
-#       uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-#     - name: Log in to the github container registry
-#       uses: docker/login-action@master
-#       with:
-#         registry: ${{ env.REGISTRY }}
-#         username: ${{ github.actor }}
-#         password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to the github container registry
+        uses: docker/login-action@master
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-#     - name: Build and push Frontend image
-#       uses: docker/build-push-action@master
-#       with:
-#         context: explorer-ui
-#         push: true
-#         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ui:latest
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@master
+        with:
+          context: explorer-ui
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ui:latest
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
