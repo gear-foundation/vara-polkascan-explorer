@@ -5,5 +5,18 @@
   vars:
 
   tasks:
-    - name: Update frontend
-      include: /tasks/docker/update.yaml
+
+    - name: Stop frontend
+      shell: >
+        /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" stop gui
+      become: yes
+
+    - name: Pull frontend
+      shell: >
+       /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" pull gui
+      become: yes
+
+    - name: Start frontend
+      shell: >
+        /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" start gui
+      become: yes
