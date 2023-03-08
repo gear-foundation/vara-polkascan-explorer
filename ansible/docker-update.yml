@@ -6,4 +6,4 @@
 
   tasks:
     - name: Update frontend
-      include: /ansible/tasks/update.yaml
+      include: /tasks/update.yaml
