@@ -42,5 +42,5 @@ jobs:
           playbook: docker-update.yml
           key: ${{secrets.SSH_PRIVATE_KEY}}
           inventory: |
-            [nodes]
+            [all]
             ${{secrets.Explorer_Node}}
