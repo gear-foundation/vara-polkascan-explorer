@@ -34,3 +34,13 @@ jobs:
           context: explorer-ui
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ui:latest
+
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          directory: ./ansible/
+          playbook: docker-update.yml
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [nodes]
+            ${{secrets.Explorer_Node}}
