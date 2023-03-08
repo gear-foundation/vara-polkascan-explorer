@@ -1,4 +1,14 @@
 - name: Restart frontend
   shell: >
-    /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" restart gui
+    /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" stop gui
+  become: yes
+
+- name: Restart frontend
+  shell: >
+    /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" pull gui
+  become: yes
+
+- name: Restart frontend
+  shell: >
+    /usr/local/bin/docker-compose -f "/home/ec2-user/explorer/docker-compose-explorer.yml" start gui
   become: yes
